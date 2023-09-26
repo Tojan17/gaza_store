@@ -3,10 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Cart;
+use App\Models\Role;
+use App\Models\Image;
+use App\Models\Order;
+use App\Models\Review;
+use App\Models\Testimonial;
+use App\Models\OrderDetails;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -43,4 +50,39 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    function role(){
+        return $this->belongTo(Role::class)
+ ->withDefault();
+   }
+
+   function image(){
+    return $this->morphOne(Image::class, 'imageable');
+   }
+
+
+   function reviews(){
+    return $this->hasMany(Review::class);
+}
+
+   function carts(){
+    return $this->hasMany(Cart::class);
+}
+
+   function orders(){
+    return $this->hasMany(Order::class);
+}
+
+function order_details(){
+    return $this->hasMany(OrderDetails::class);
+}
+
+function payment(){
+    return $this->hasMany(Payment::class);
+}
+
+function testimonials(){
+    return $this->hasMany(Testimonial::class);
+}
+
 }
